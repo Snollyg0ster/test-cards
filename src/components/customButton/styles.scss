@@ -1,17 +1,12 @@
+@import "../../common";
+
 .button {
   width: 218px;
   min-height: 47px;
   background: #7469F3;
   border-radius: 6px;
   font-weight: 500;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  @include flexCenter;
   user-select: none;
-  &:hover {
-    filter: brightness(80%);
-  }
-  &:active {
-    filter: brightness(120%);
-  }
+  @include brightnessActions(80%, 120%);
 }

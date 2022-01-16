@@ -1,0 +1,14 @@
+@mixin brightnessActions($hover, $active) {
+    &:hover {
+        filter: brightness($hover);
+    }
+    &:active {
+        filter: brightness($active);
+    }
+}
+
+@mixin flexCenter {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
