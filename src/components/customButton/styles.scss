@@ -1,0 +1,18 @@
+.button {
+  width: 218px;
+  height: 47px;
+  background: #7469F3;
+  border-radius: 6px;
+  color: #FFFFFF;
+  font-weight: 500;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  user-select: none;
+  &:hover {
+    filter: brightness(80%);
+  }
+  &:active {
+    filter: brightness(120%);
+  }
+}
