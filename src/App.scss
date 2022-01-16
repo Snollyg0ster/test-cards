@@ -4,11 +4,16 @@
   background-color: #2b2f3b;
   height: 100%;
   box-sizing: border-box;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: #FFFFFF;
 }
 
 .buttonCont {
   width: 100%;
-  height: 47px;
+  min-height: 47px;
   position: relative;
 }
 

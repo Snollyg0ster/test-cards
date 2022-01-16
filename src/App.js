@@ -2,11 +2,12 @@ import { useState,useMemo, useEffect } from 'react';
 import './App.scss';
 import CustomButton from './components/customButton';
 import Cards from './components/cards';
+import Card from './components/card';
 import useData from './hooks/useData';
 
 function App() {
   const [page, setPage] = useState(1);
-  const [step] = useState(3);
+  const [step] = useState(6);
   const typeOfData = useMemo(() => ['comments', 'photos'], []) 
   const [cards, isCardsLoading, isLoadingFail] = useData(typeOfData, page, step);
   const [loadedCards, setLoadedCards] = useState([])
@@ -28,6 +29,9 @@ function App() {
         <CustomButton title="Sign In" injectedStyle="signInButton"/>
       </div>
       <Cards getMoreData={getMoreData} isLoading={isCardsLoading}>
+        {loadedCards.map(card => (
+          <Card key={card.comments.id} data={card}/>
+        ))}
       </Cards>
     </div>
   );

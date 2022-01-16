@@ -1,16 +1,21 @@
 import './styles.scss';
-import CircularProgress from '../circularProgress'
-import CustomButton from '../customButton'
+import star from '../../img/star.svg'
 
-const Cards = ({ children, isLoading, getMoreData }) => {
+const Card = ({ data }) => {
 
     return (
-        <div className="cards">
-            {children}
-            {isLoading && <div className="circularProgress"><CircularProgress/></div>}
-            <CustomButton title="More" callback={getMoreData}/>
+        <div className="card" style={{backgroundImage: `url(${data.photos.url})`}}>
+            <div className="info">
+                <div className="infoHeader">
+                    <div className="email">{data.comments.email}</div>
+                    <div className="rating">
+                        {data.rating}
+                        <img alt="star" className="star" src={star}></img>
+                    </div>
+                </div>
+            </div>
         </div>
     )
 }
 
-export default Cards;
+export default Card;
