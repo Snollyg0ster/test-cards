@@ -11,7 +11,9 @@ const Cards = ({ children, isLoading, getMoreData }) => {
                 injectedStyle="moreButton" 
                 isLoading={isLoading}
             />
-            <div className="cardsWrapper">{children}</div>
+            <div className="cardsWrapper">
+                {children}
+            </div>
         </div>
     )
 }

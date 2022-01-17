@@ -1,13 +1,30 @@
+import { useState } from 'react';
 import clsx from 'classnames';
 import './styles.scss';
 
-const CustomInput = ({injectedStyle}) => {
+const CustomInput = ({ injectedStyle, placeholder, value, onChange, ...inputProps }) => {
+	const [isLabelPushed, setIsLabelPushed] = useState(false);
 
-    return (
-        <div classname={clsx(injectedStyle, "inputCont")}>
-            123
-        </div>
-    )
+	const handleInputFocus = () => setIsLabelPushed(true);
+
+	const handleInputBlur = () => value === '' && setIsLabelPushed(false);
+
+	return (
+		<div className={clsx(injectedStyle, "inputCont")}>
+			<input
+				className="input"
+				value={value}
+				onChange={onChange}
+				onFocus={handleInputFocus}
+				onBlur={handleInputBlur}
+				{...inputProps}
+			/>
+			{placeholder &&
+				<div className={clsx("title", isLabelPushed ? "pushedLabel" : "")}>
+					{placeholder}
+				</div>}
+		</div>
+	)
 }
 
 export default CustomInput;

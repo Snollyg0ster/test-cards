@@ -9,5 +9,32 @@
   font-size: 36px;
   line-height: 42px;
   color: #434343;
-  margin-bottom: 42px;
+  margin-bottom: 34px;
+}
+
+.interactionField {
+  width: 385px;
+}
+
+.authInput {
+  margin-bottom: 25px;
+}
+
+.checkboxField {
+  display: flex;
+  align-items: center;
+  padding-left: 3px;
+  margin-bottom: 25px;
+}
+
+.checkboxTitle {
+  margin-left: 10px;
+  font-weight: 500;
+  font-size: 12px;
+  color: #434343;
+}
+
+.signButton {
+  width: 166px;
+  height: 40px;
 }

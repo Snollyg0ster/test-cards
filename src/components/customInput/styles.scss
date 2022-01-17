@@ -1,7 +1,34 @@
 .inputCont {
-    width: 300px;
+    width: 100%;
     height: 50px;
-    border: 2px solid #7469F3;
+    border: 2px solid #7469f3;
     box-sizing: border-box;
     border-radius: 6px;
+    position: relative;
+}
+
+.input {
+    position: absolute;
+    top: 18px;
+    left: 16px;
+    font-size: 18px;
+    border: 0;
+    &:focus {
+        outline: none;
+    }
+}
+
+.title {
+    position: absolute;
+    color: #bababa;
+    font-size: 18px;
+    top: 12px;
+    left: 18px;
+    transition: font-size 100ms, top 100ms;
+    pointer-events: none;
+}
+
+.pushedLabel {
+    font-size: 11px;
+    top: 5px;
 }

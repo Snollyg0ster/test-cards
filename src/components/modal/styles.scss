@@ -1,23 +1,26 @@
-@import '../../common';
+@import "../../common";
 
 .modalBackground {
   position: fixed;
   top: 0;
   left: 0;
-  width:100%;
+  width: 100%;
   height: 100%;
   background: rgba(255, 255, 255, 0.5);
   display: flex;
   justify-content: center;
   align-items: center;
+  animation: showModal 140ms;
 }
 
 .modalWindow {
+  box-sizing: border-box;
   width: 463px;
   height: 371px;
-  background: #FFFFFF;
+  background: #ffffff;
   border-radius: 6px;
-  padding: 20px 18px 13px 18px
+  padding: 20px 18px 13px 18px;
+  animation: showModal 600ms;
 }
 
 .closeButtonCont {
@@ -28,4 +31,13 @@
 
 .closeButton {
   @include brightnessActions(0%, 30%);
+}
+
+@keyframes showModal {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
