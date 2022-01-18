@@ -6,11 +6,26 @@ import Card from './components/card';
 import Modal from './components/modal';
 import Auth from './components/authForm'
 import useData from './hooks/useData';
-import { AuthProvider } from './auth/authContext';
+import { AuthProvider, AuthContext } from './auth/authContext';
+import { getAuth } from 'firebase/auth'
+
+const AuthPanel = ({ handleAuthButton }) => {
+  const { user } = useContext(AuthContext);
+
+  return (
+    <div className="buttonCont">
+      <CustomButton
+        title={user ? "Sign out" : "Sign In"}
+        injectedStyle="signInButton"
+        callback={() => handleAuthButton(user)}
+      />
+    </div>
+  )
+}
 
 function App() {
   const [page, setPage] = useState(1);
-  const [step] = useState(6);
+  const [step] = useState(3);
   const typeOfData = useMemo(() => ['comments', 'photos'], [])
   const [cards, isCardsLoading] = useData(typeOfData, page, step);
   const [loadedCards, setLoadedCards] = useState([])
@@ -20,6 +35,8 @@ function App() {
     setPage(page => page + 1)
   }
 
+  const handleAuthButton = (user) => user ? getAuth().signOut() : setIsModalOpen(true)
+
   useEffect(() => {
     setLoadedCards(loaded => loaded.concat(cards))
   }, [cards])
@@ -27,16 +44,14 @@ function App() {
   return (
     <AuthProvider>
       <div className="App">
-        <div className="buttonCont">
-          <CustomButton title="Sign In" injectedStyle="signInButton" callback={() => setIsModalOpen(true)} />
-        </div>
+        <AuthPanel handleAuthButton={handleAuthButton} />
         <Cards getMoreData={getMoreData} isLoading={isCardsLoading}>
           {loadedCards.map(card => (
             <Card key={card.comments.id} data={card} />
           ))}
         </Cards>
         <Modal isOpen={isModalOpen} closeModal={() => setIsModalOpen(false)}>
-          <Auth />
+          <Auth closeModal={() => setIsModalOpen(false)} />
         </Modal>
       </div>
     </AuthProvider>

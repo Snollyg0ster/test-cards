@@ -3,34 +3,54 @@ import { useState, useEffect, useContext, useCallback } from 'react';
 import CustomInput from '../customInput';
 import CustomCheckbox from '../customCheckbox';
 import CustomButton from '../customButton'
-import { AuthContext } from '../../auth/authContext';
-import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth'
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth'
 
-const Auth = () => {
-	const { user } = useContext(AuthContext);
-	const [login, setLogin] = useState('');
-	const [password, setPassword] = useState('');
+const Auth = ({ closeModal }) => {
+	const [login, setLogin] = useState(localStorage.login || '');
+	const [password, setPassword] = useState(localStorage.password || '');
 	const [saveData, setSaveData] = useState(false);
 	const [authProcess, setAuthProcess] = useState(false);
+	const [authDone, setAuthDone] = useState(false);
+	const [authFailed, setAuthFailed] = useState(false);
 
 	const handleLogin = (event) => setLogin(event.target.value);
 	const handlePassword = (event) => setPassword(event.target.value);
 	const handleCheckbox = () => setSaveData(isSave => !isSave);
 
-	const register = useCallback(async () => {
+	const register = useCallback(async (_, isLogin = false) => {
 		try {
+			setAuthFailed(false)
 			setAuthProcess(true)
-			await createUserWithEmailAndPassword(getAuth(), login, password);
+			await (isLogin ? signInWithEmailAndPassword(getAuth(), login, password)
+				: createUserWithEmailAndPassword(getAuth(), login, password))
+				.then(() => {
+					if (saveData) {
+						localStorage.setItem('login', login);
+						localStorage.setItem('password', password);
+					}
+					else {
+						localStorage.removeItem('login');
+						localStorage.removeItem('password');
+					}
+					setAuthDone(true)
+				});
 		}
 		catch (error) {
-			console.log('auth failed! - ', error)
+			if (error.code
+				&& error.code.includes('already-in-use')) {
+				register('', true);
+			}
+			else {
+				setAuthFailed(true);
+				console.log('auth failed! - ', error)
+			}
 		}
 		finally {
 			setAuthProcess(false)
 		}
-	}, [login, password])
+	}, [login, password, saveData])
 
-	useEffect(() => { console.log('user', user) }, [user])
+	useEffect(() => { closeModal && authDone && closeModal() }, [authDone])
 
 	return (
 		<div className="root">
@@ -38,15 +58,16 @@ const Auth = () => {
 				Authorization
 			</div>
 			<div className="interactionField">
-				<CustomInput injectedStyle="authInput" value={login} onChange={handleLogin} placeholder="Login" />
+				<CustomInput injectedStyle="authInput" value={login} onChange={handleLogin} placeholder="Login" type="email" />
 				<CustomInput injectedStyle="authInput" value={password} onChange={handlePassword} placeholder="Password" type="password" />
-				<div className="checkboxField">
-					<CustomCheckbox value={saveData} onChange={handleCheckbox} />
-					<label className="checkboxTitle">
+				<div className="checkboxField" onClick={handleCheckbox}>
+					<CustomCheckbox value={saveData} />
+					<label className="checkboxTitle" >
 						Remember me on next login
 					</label>
 				</div>
 			</div>
+			{authFailed && <label className="authFailed">Authentication Failed</label>}
 			<CustomButton title="Sign In" injectedStyle="signButton" callback={register} isLoading={authProcess} />
 		</div>
 	)

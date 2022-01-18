@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import clsx from 'classnames';
 import './styles.scss';
 
@@ -8,6 +8,8 @@ const CustomInput = ({ injectedStyle, placeholder, value, onChange, ...inputProp
 	const handleInputFocus = () => setIsLabelPushed(true);
 
 	const handleInputBlur = () => value === '' && setIsLabelPushed(false);
+
+	useEffect(() => { value && handleInputFocus(); }, [value])
 
 	return (
 		<div className={clsx(injectedStyle, "inputCont")}>
